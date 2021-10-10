@@ -3,9 +3,11 @@
 #include <string.h>
 #include <math.h>
 
-//**************************//
-//***BASE64 encoding table**//
-//**************************//
+#include "TestCode.h"
+
+//**************************
+//***BASE64 encoding table**
+//**************************
 static char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
                                 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
                                 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
@@ -17,27 +19,31 @@ static char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
 
 char * char_to_binary(unsigned char c)
 {
-    char * letter_byte = malloc(sizeof(char));
+    char * letter_byte = malloc(sizeof(char)+1);
     
     for( int i = 7; i >= 0; i-- ){
         letter_byte[7-i] = (char)(( c >> i ) & 1 ? 1 : 0) + '0'; 
     }
+    letter_byte[8] = '\0';
     return letter_byte;
 }
 
 char *string_to_binary(const char * Sentence)
 {
-    char * Sentence_in_binary = malloc(sizeof(char)*strlen(Sentence)+1);
+    int len = sizeof(char)*strlen(Sentence)+1;
+    char * Sentence_in_binary = malloc(len);
     
     for(size_t i = 0, len = strlen(Sentence); i < len; i++){
         strcat(Sentence_in_binary,char_to_binary(Sentence[i]));
     }
-    
-    printf("%s\n%ld\n\n",Sentence_in_binary,strlen(Sentence_in_binary));
+    Sentence_in_binary[len] = '\0';
+
+    // printf("%s\n%ld\n\n",Sentence_in_binary,strlen(Sentence_in_binary));
     return Sentence_in_binary;
 }
 
-char * binary_to_decimal(int n) {
+char * binary_to_decimal(int n)
+{
     int dec = 0, i = 0, rem = 0;
     char *string_num = malloc(sizeof(char)*7);
 
@@ -72,11 +78,10 @@ void binary_string_to_decimal_string(char * Sentence_in_binary)
 
 int main()
 {
-    const char Sentence[] = "This a long sentence that I wanna encode into base64";
-    
-    // binary_string_to_decimal_string(string_to_binary(Sentence));
-    string_to_binary(Sentence);
+   const char Sentence[] = "This a long sentence that I wanna encode into base64";
    
-    return 0;
+    binary_string_to_decimal_string(string_to_binary(Sentence));
+    string_to_binary(Sentence);
+  
+   return 0;
 }
-
